@@ -1,1418 +1,1688 @@
-# jfxbsc
+# JFXBSC / OpenBSC AI
+## ChatGPT Plugin + LinkedIn Services Marketplace Integration Architecture
 
-## OpenBSC AI --- Open-Source Balanced Scorecard & Business Intelligence Platform
+> **Project:** `robotics-intelligent-systems/jfxbsc`  
+> **Purpose:** Extend OpenBSC AI with a strategic external-capability sourcing layer that connects Balanced Scorecard objectives, KPI/OKR gaps, initiatives, ChatGPT plugins/apps, and LinkedIn Services Marketplace workflows.
+>
+> **Architecture principle:** LinkedIn and ChatGPT remain **optional external integration services**. The OpenBSC AI core stays modular, auditable, provider-neutral, and replaceable.
 
-> Strategy execution, KPI/OKR management, business intelligence,
-> semantic metrics, enterprise analytics, AI-assisted decision support,
-> and continuous performance improvement in an open modular
-> architecture.
+---
 
-**jfxbsc / OpenBSC AI** evolves the original AI-powered Balanced
-Scorecard and Business Intelligence technology compendium into a
-coherent open architecture connecting:
+# 1. Existing OpenBSC AI Context
 
-**Strategy → Objectives → KPIs/OKRs → Enterprise Data → Analytics → AI →
-Decisions → Initiatives → Outcomes**
+OpenBSC AI already organizes strategy execution as:
 
-The project preserves the original repository's interest in business
-intelligence, visualization, OLAP, graph analytics, ERP/CRM/SCM, data
-mining, workflow orchestration, quality management, multi-criteria
-decision support, and the engineering organization **MBSE → CAD → CAM →
-CAS**, while reorganizing those technologies as modular capabilities
-rather than mandatory dependencies.
-
-------------------------------------------------------------------------
-
-## Table of Contents
-
-1.  [Overview](#overview)
-2.  [Vision](#vision)
-3.  [Business Context](#business-context)
-4.  [Objectives](#objectives)
-5.  [Balanced Scorecard Model](#balanced-scorecard-model)
-6.  [Strategy Map](#strategy-map)
-7.  [KPI and OKR Management](#kpi-and-okr-management)
-8.  [Reference Architecture](#reference-architecture)
-9.  [Semantic Metrics Layer](#semantic-metrics-layer)
-10. [Business Intelligence](#business-intelligence)
-11. [AI and Decision Intelligence](#ai-and-decision-intelligence)
-12. [AI Agents](#ai-agents)
-13. [RAG and Enterprise Knowledge](#rag-and-enterprise-knowledge)
-14. [Forecasting and Predictive
-    Analytics](#forecasting-and-predictive-analytics)
-15. [Multi-Criteria Decision Support](#multi-criteria-decision-support)
-16. [Process and Value Stream
-    Analytics](#process-and-value-stream-analytics)
-17. [Quality Management](#quality-management)
-18. [Data Integration Architecture](#data-integration-architecture)
-19. [Warehouse and Lakehouse](#warehouse-and-lakehouse)
-20. [Real-Time Analytics](#real-time-analytics)
-21. [Dashboards and Visualization](#dashboards-and-visualization)
-22. [Enterprise System Integration](#enterprise-system-integration)
-23. [MBSE and Enterprise
-    Architecture](#mbse-and-enterprise-architecture)
-24. [Open-Source Technology
-    Compendium](#open-source-technology-compendium)
-25. [User Guide](#user-guide)
-26. [Installation Guide](#installation-guide)
-27. [Dependencies](#dependencies)
-28. [Recommended Repository
-    Structure](#recommended-repository-structure)
-29. [Business Use Cases](#business-use-cases)
-30. [MVP](#mvp)
-31. [Development Roadmap](#development-roadmap)
-32. [How to Contribute](#how-to-contribute)
-33. [Code of Conduct](#code-of-conduct)
-34. [Authors and Maintainers](#authors-and-maintainers)
-35. [Intellectual Property and Open
-    Design](#intellectual-property-and-open-design)
-36. [Disclaimer](#disclaimer)
-37. [License](#license)
-
-------------------------------------------------------------------------
-
-## Overview
-
-OpenBSC AI is a reference architecture for strategy and performance
-management that combines the Balanced Scorecard with modern data
-engineering, BI, semantic metrics, process analytics, AI, and enterprise
-integration.
-
-The architecture is designed around replaceable interfaces rather than a
-single BI vendor or ERP ecosystem.
-
-Primary capability areas:
-
--   strategy definition and execution;
--   strategy maps;
--   Balanced Scorecard perspectives;
--   KPI and OKR management;
--   targets, thresholds, trends, and alerts;
--   initiatives and portfolios;
--   semantic metrics;
--   dashboards and self-service BI;
--   enterprise data integration;
--   OLAP and federated analytics;
--   real-time analytics;
--   forecasting and anomaly detection;
--   AI-assisted analysis;
--   RAG over enterprise knowledge;
--   multi-criteria decision support;
--   process and value-stream analysis;
--   quality and continuous improvement;
--   enterprise architecture and MBSE traceability.
-
-------------------------------------------------------------------------
-
-## Vision
-
-``` text
-                    OPENBSC AI
-
-                     STRATEGY
-                        |
-                 Strategy Map
-                        |
-        +---------------+---------------+
-        |               |               |
-   Objectives         KPIs/OKRs     Initiatives
-        |               |               |
-        +---------------+---------------+
-                        |
-                 Semantic Metrics
-                        |
-              Business Intelligence
-                        |
-          AI & Decision Intelligence
-                        |
-              Human Decision-Making
-                        |
-                  Actions / Change
-                        |
-                     Outcomes
-                        |
-                  Feedback Loop
-                        |
-                     STRATEGY
+```text
+Strategy
+   ↓
+Objectives
+   ↓
+KPIs / OKRs
+   ↓
+Enterprise Data
+   ↓
+Analytics
+   ↓
+AI
+   ↓
+Decisions
+   ↓
+Initiatives
+   ↓
+Outcomes
+   ↓
+Feedback
 ```
 
-The goal is not merely to display dashboards, but to establish a
-measurable closed loop between strategic intent and organizational
-outcomes.
+The repository also defines:
 
-------------------------------------------------------------------------
+- Balanced Scorecard perspectives;
+- strategy maps;
+- KPI/OKR governance;
+- semantic metrics;
+- business intelligence;
+- forecasting;
+- AI-assisted analysis;
+- RAG;
+- AI agents;
+- multi-criteria decision support;
+- process/value-stream analytics;
+- enterprise integration;
+- MBSE → CAD → CAM → CAS traceability.
 
-## Business Context
+The proposed extension adds a **Strategic Services Sourcing** capability.
 
-Organizations commonly distribute strategic information across
-spreadsheets, ERP systems, CRM applications, project tools, financial
-systems, data warehouses, BI dashboards, documents, and informal
-knowledge.
+---
 
-This fragmentation creates problems such as:
+# 2. New Strategic Services Sourcing Loop
 
--   inconsistent KPI definitions;
--   duplicated calculations;
--   weak lineage from strategy to data;
--   delayed reporting;
--   conflicting dashboards;
--   limited predictive capability;
--   manual executive reporting;
--   poor traceability between initiatives and results;
--   vendor lock-in.
-
-OpenBSC AI addresses these issues through a shared strategy model,
-semantic metrics layer, modular integration architecture, and optional
-AI services.
-
-------------------------------------------------------------------------
-
-## Objectives
-
--   Implement an open Balanced Scorecard architecture.
--   Link strategic objectives to measurable indicators.
--   Support KPI and OKR governance.
--   Create reusable semantic metric definitions.
--   Integrate heterogeneous enterprise data sources.
--   Support batch and real-time analytics.
--   Enable self-service BI without duplicating business logic.
--   Support forecasting and anomaly detection.
--   Introduce AI agents as assistive analytical services.
--   Support RAG over governed enterprise knowledge.
--   Provide multi-criteria decision-support models.
--   Connect process improvement and quality management to strategy.
--   Maintain traceability from data to metrics to objectives.
--   Separate required dependencies from optional integrations and
-    research references.
--   Minimize vendor lock-in.
-
-------------------------------------------------------------------------
-
-## Balanced Scorecard Model
-
-The default model supports the four classic perspectives while allowing
-organizations to define additional perspectives.
-
-``` text
-                    VISION & STRATEGY
-                           |
-        +------------------+------------------+
-        |                  |                  |
-    Financial          Customer         Internal Process
-        |                  |                  |
-        +------------------+------------------+
-                           |
-                   Learning & Growth
+```text
+Strategic Objective
+       ↓
+KPI / OKR Gap
+       ↓
+Capability Gap
+       ↓
+Build / Buy / Partner Decision
+       ↓
+External Service Requirement
+       ↓
+ChatGPT Sourcing Assistant
+       ↓
+LinkedIn Provider Discovery
+       ↓
+Services Marketplace / Request for Proposal
+       ↓
+Provider Evaluation
+       ↓
+Human Selection
+       ↓
+Engagement / Contract
+       ↓
+Initiative Execution
+       ↓
+KPI Outcome
+       ↓
+Balanced Scorecard Feedback
 ```
 
-Each perspective can contain:
+This turns external professional services into measurable strategic initiatives rather than isolated procurement events.
 
-``` text
-Perspective
- └── Objective
-      ├── KPI
-      │    ├── Actual
-      │    ├── Target
-      │    ├── Threshold
-      │    ├── Trend
-      │    └── Forecast
-      ├── OKR
-      ├── Initiative
-      ├── Owner
-      ├── Risk
-      └── Evidence
+---
+
+# 3. High-Level Integration Architecture
+
+```text
+┌─────────────────────────────────────────────────────────────────────┐
+│                         OPENBSC AI                                  │
+│                                                                     │
+│ Strategy Map | Objectives | KPIs | OKRs | Initiatives | Risks      │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                  STRATEGIC CAPABILITY GAP ENGINE                    │
+│                                                                     │
+│ KPI Gap | Skill Gap | Process Gap | Technology Gap | Capacity Gap  │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SERVICES SOURCING AGENT                          │
+│                                                                     │
+│ Requirement Builder | Search Plan | Evaluation | Recommendation     │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+                ┌───────────────┴────────────────┐
+                ▼                                ▼
+┌───────────────────────────┐       ┌───────────────────────────────┐
+│ CHATGPT PLUGIN / APP      │       │ INTERNAL KNOWLEDGE / RAG      │
+│ ORCHESTRATION             │       │ policies / budgets / vendors  │
+└─────────────┬─────────────┘       └───────────────────────────────┘
+              │
+              ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                   LINKEDIN INTEGRATION BOUNDARY                     │
+│                                                                     │
+│ Connected LinkedIn App / People Search                             │
+│ LinkedIn Services Marketplace / Service Pages                      │
+│ User-approved navigation / proposal workflow                       │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                    PROVIDER CANDIDATE MODEL                         │
+│                                                                     │
+│ Skills | Experience | Location | Service Category | Evidence       │
+│ Reviews | Connections | Availability | Proposal | Cost             │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+                                ▼
+┌─────────────────────────────────────────────────────────────────────┐
+│                 MULTI-CRITERIA DECISION SUPPORT                     │
+│                                                                     │
+│ Fit | Quality | Cost | Risk | Delivery | Strategic Alignment       │
+└───────────────────────────────┬─────────────────────────────────────┘
+                                │
+                                ▼
+                        HUMAN APPROVAL
+                                │
+                                ▼
+                    STRATEGIC INITIATIVE
+                                │
+                                ▼
+                    KPI / OKR MEASUREMENT
 ```
 
-The model should support public-sector, nonprofit, educational,
-industrial, and commercial variants without hard-coding one strategy
-methodology.
+---
 
-------------------------------------------------------------------------
+# 4. ChatGPT Plugin Role
 
-## Strategy Map
+Current ChatGPT plugin architecture allows plugins to bundle workflow capabilities and underlying apps that connect ChatGPT to external data and actions.
 
-Strategy maps express cause-and-effect relationships between objectives.
+Within JFXBSC, ChatGPT should act as an **external conversational orchestration surface**, not as the system of record.
 
-``` text
-Learning & Growth
-      |
-      v
-Improve Skills -----> Improve Data Capability
-      |                       |
-      +-----------+-----------+
-                  v
-          Internal Process
-                  |
-          Reduce Cycle Time
-                  |
-                  v
-              Customer
-                  |
-        Improve Experience
-                  |
-                  v
-              Financial
-                  |
-          Sustainable Growth
+Recommended responsibilities:
+
+- translate strategy gaps into service requirements;
+- summarize internal project context;
+- formulate provider-search criteria;
+- retrieve supported LinkedIn professional profiles through the connected LinkedIn app;
+- help compare provider candidates;
+- create evaluation matrices;
+- draft request-for-proposal text;
+- summarize proposals entered into OpenBSC;
+- connect selected engagements back to strategic initiatives and KPIs.
+
+OpenBSC remains authoritative for:
+
+- objectives;
+- KPIs;
+- budgets;
+- initiative ownership;
+- approved supplier decisions;
+- strategic outcome measurement.
+
+---
+
+# 5. Current LinkedIn Connector Boundary
+
+The currently available LinkedIn connector in ChatGPT should be modeled conservatively.
+
+Its present professional-search capability is suitable for:
+
+```text
+Known Person / Candidate
+        ↓
+Name + Optional Filters
+        ↓
+LinkedIn Professional Profile Search
+        ↓
+Profile Context
+        ↓
+OpenBSC Provider Candidate
 ```
 
-Recommended relationship metadata:
+It should **not** be assumed to provide native LinkedIn Services Marketplace transaction APIs unless LinkedIn explicitly exposes and authorizes those actions.
 
--   source objective;
--   target objective;
--   relationship type;
--   hypothesis;
--   confidence;
--   evidence;
--   owner;
--   validation status.
+Therefore the architecture separates:
 
-This allows strategy maps to evolve from static diagrams into testable
-strategic hypotheses.
+```text
+CHATGPT LINKEDIN APP
+professional-profile discovery
+        │
+        │ optional context
+        ▼
+PROVIDER CANDIDATE
 
-------------------------------------------------------------------------
-
-## KPI and OKR Management
-
-### KPI definition
-
-``` yaml
-kpi:
-  id: revenue_growth
-  name: Revenue Growth
-  objective: sustainable_growth
-  unit: percent
-  frequency: monthly
-  aggregation: calculated
-  owner: finance
-  source_metric: semantic.revenue_growth
-  target: 8
-  thresholds:
-    warning: 5
-    critical: 2
+LINKEDIN SERVICES MARKETPLACE
+service categories
+service pages
+request for proposal
+provider messaging
+        │
+        │ external marketplace workflow
+        ▼
+PROPOSAL / ENGAGEMENT
 ```
 
-### KPI lifecycle
+---
 
-``` text
-Define
-  |
-Source
-  |
-Calculate
-  |
-Validate
-  |
-Publish
-  |
-Monitor
-  |
-Forecast
-  |
-Review
-  |
-Improve
+# 6. LinkedIn Services Marketplace Workflow
+
+LinkedIn currently allows clients to:
+
+- search for service providers;
+- browse Service Pages;
+- request proposals;
+- receive provider proposals;
+- message providers;
+- agree final commercial terms outside LinkedIn.
+
+Recommended JFXBSC mapping:
+
+```text
+OpenBSC Service Requirement
+        ↓
+LinkedIn Services Search
+        ↓
+Provider Service Page
+        ↓
+Request Proposal
+        ↓
+Provider Response
+        ↓
+Proposal Imported / Registered in OpenBSC
+        ↓
+Evaluation
+        ↓
+Selection
+        ↓
+Contract Managed Externally
+        ↓
+Initiative Execution
 ```
 
-### OKR model
+---
 
-``` text
-Objective
-├── Key Result 1
-├── Key Result 2
-├── Key Result 3
-└── Initiatives
+# 7. Important Marketplace Integration Constraint
+
+Do not design the OpenBSC core around an undocumented LinkedIn Marketplace API.
+
+Preferred hierarchy:
+
+1. official LinkedIn connector/app action, if and when available;
+2. official LinkedIn API explicitly authorized for the use case;
+3. user-driven Services Marketplace workflow;
+4. structured manual import into OpenBSC;
+5. optional browser workflow through an authorized interactive environment.
+
+Avoid:
+
+- scraping;
+- DOM extraction;
+- session-cookie reuse;
+- credential automation;
+- bypassing LinkedIn access controls;
+- bulk extraction not authorized by LinkedIn.
+
+---
+
+# 8. Balanced Scorecard Perspective Mapping
+
+## Financial Perspective
+
+External-service sourcing can support:
+
+- reduce cost of strategic initiatives;
+- improve return on consulting spend;
+- reduce sourcing cycle time;
+- improve budget predictability;
+- increase project ROI.
+
+Example KPIs:
+
+```text
+External Service Cost Variance
+Consulting ROI
+Cost per Strategic Initiative
+Proposal-to-Contract Cost Delta
+Budget Utilization
 ```
 
-Balanced Scorecard and OKRs are treated as complementary rather than
-mutually exclusive: the BSC provides strategic structure and
-perspectives, while OKRs can provide shorter-cycle execution mechanisms.
+---
 
-------------------------------------------------------------------------
+## Customer Perspective
 
-## Reference Architecture
+Potential objectives:
 
-``` text
-                      USER EXPERIENCE
-                             |
-        +--------------------+--------------------+
-        |                    |                    |
- Strategy Portal       BI Dashboards        AI Assistant
-        |                    |                    |
-        +--------------------+--------------------+
-                             |
-                   APPLICATION SERVICES
-                             |
-     Strategy / KPI / OKR / Initiative / Portfolio
-                             |
-                   DECISION INTELLIGENCE
-                             |
-     Forecast / Anomaly / Optimization / RAG / Agents
-                             |
-                    SEMANTIC LAYER
-                             |
-       Metrics / Dimensions / Lineage / Governance
-                             |
-                    ANALYTICS LAYER
-                             |
-          SQL / OLAP / Graph / Process / ML
-                             |
-                      DATA PLATFORM
-                             |
-       Warehouse / Lakehouse / Streaming / Cache
-                             |
-                  INTEGRATION PLATFORM
-                             |
- +--------+--------+--------+--------+--------+--------+
- |        |        |        |        |        |        |
- ERP     CRM      SCM      HR       QMS     Finance  External
+- improve customer experience;
+- accelerate specialist delivery;
+- add expert capabilities;
+- improve service quality.
+
+Example KPIs:
+
+```text
+Customer Satisfaction
+Delivery Quality
+Service-Level Compliance
+Time to Resolve Capability Gap
+External Expertise Impact
 ```
 
-Cross-cutting concerns:
+---
 
-``` text
-Identity | Security | Governance | Metadata | Audit
-Observability | Data Quality | Lineage | Versioning
+## Internal Process Perspective
+
+Potential objectives:
+
+- reduce provider-selection cycle time;
+- increase proposal quality;
+- standardize supplier evaluation;
+- improve vendor onboarding.
+
+Example KPIs:
+
+```text
+Time to Shortlist
+Time to Proposal
+Time to Contract
+Provider Evaluation Completion Rate
+Initiative Delivery Cycle Time
 ```
 
-------------------------------------------------------------------------
+---
 
-## Semantic Metrics Layer
+## Learning & Growth Perspective
 
-A semantic layer prevents each dashboard from independently redefining
-business metrics.
+Potential objectives:
 
-``` text
-Raw Data
-   |
-Data Models
-   |
-Semantic Entities
-   |
-Canonical Metrics
-   |
-+--+---------+----------+----------+
-|            |          |          |
-BSC        BI         AI       Reports
+- access external expertise;
+- transfer knowledge internally;
+- expand professional networks;
+- close skills gaps.
+
+Example KPIs:
+
+```text
+Skills Gap Closure Rate
+Knowledge Transfer Completion
+External Expert Hours
+Internal Capability Improvement
+Repeat Collaboration Rate
 ```
 
-Example metric contract:
+---
 
-``` yaml
-metric:
-  name: gross_margin
-  label: Gross Margin
-  expression: (revenue - cost_of_goods) / revenue
-  unit: percent
-  grain: month
-  dimensions:
-    - company
-    - business_unit
-    - product
-    - geography
-  owner: finance
-  quality_rule: revenue != 0
+# 9. Strategic Capability Gap Model
+
+```yaml
+capability_gap:
+  id: ai_sales_automation
+  strategic_objective: improve_sales_productivity
+  perspective: internal_process
+  current_score: 42
+  target_score: 75
+  gap_type: external_expertise
+  required_skills:
+    - CRM architecture
+    - AI agents
+    - RAG
+    - LinkedIn sales workflows
+  budget_ceiling: 12000
+  target_start: 2026-10
+  owner: sales_operations
 ```
 
-Metric definitions should be version-controlled, testable, documented,
-and traceable to source data.
+This object becomes the input to the sourcing workflow.
 
-------------------------------------------------------------------------
+---
 
-## Business Intelligence
+# 10. Service Requirement Object
 
-OpenBSC AI supports BI as a replaceable presentation and exploration
-layer.
-
-Capabilities may include:
-
--   executive scorecards;
--   operational dashboards;
--   drill-down analysis;
--   pivoting;
--   ad-hoc exploration;
--   embedded analytics;
--   scheduled reports;
--   spreadsheet-style analysis;
--   geospatial visualization;
--   graph analytics;
--   alerts;
--   mobile-friendly views.
-
-Business logic should preferably remain in governed models and semantic
-metrics rather than being duplicated inside individual dashboards.
-
-------------------------------------------------------------------------
-
-## AI and Decision Intelligence
-
-AI extends---not replaces---the governed analytical foundation.
-
-Potential applications:
-
--   KPI forecasting;
--   anomaly detection;
--   root-cause hypothesis generation;
--   natural-language BI;
--   scenario analysis;
--   recommendation generation;
--   initiative prioritization;
--   risk identification;
--   report summarization;
--   metric explanation;
--   strategy-map hypothesis analysis.
-
-Recommended flow:
-
-``` text
-Governed Data
-     |
-Semantic Metrics
-     |
-Context + Strategy
-     |
-AI / Analytics
-     |
-Evidence + Explanation
-     |
-Human Review
-     |
-Decision / Initiative
+```yaml
+service_requirement:
+  id: sr_2026_001
+  capability_gap: ai_sales_automation
+  title: AI CRM and LinkedIn Sales Workflow Architecture
+  category: technology_consulting
+  required_outcomes:
+    - reference architecture
+    - working prototype
+    - CRM integration plan
+    - KPI dashboard
+  must_have_skills:
+    - enterprise architecture
+    - CRM
+    - AI
+    - APIs
+  preferred_skills:
+    - MCP
+    - open source
+    - LinkedIn Sales Navigator
+  geography:
+    preferred:
+      - Argentina
+      - LATAM
+    remote_allowed: true
+  budget:
+    maximum: 12000
+    currency: USD
 ```
 
-AI-generated recommendations should identify evidence, uncertainty,
-model/version metadata, and assumptions where practical.
+---
 
-------------------------------------------------------------------------
+# 11. ChatGPT Services Sourcing Agent
 
-## AI Agents
-
-Agents can provide specialized assistive roles.
-
-``` text
-                    Orchestrator
-                         |
- +-----------+-----------+-----------+-----------+
- |           |           |           |           |
-Strategy   Finance    Process      Data       Risk
- Agent      Agent      Agent       Agent      Agent
- |           |           |           |           |
- +-----------+-----------+-----------+-----------+
-                         |
-                  Governed Tools
-                         |
-        Metrics / SQL / Documents / Models
+```text
+Strategic Gap
+      ↓
+Service Requirement
+      ↓
+ChatGPT Sourcing Agent
+      │
+      ├── interpret requirement
+      ├── generate search criteria
+      ├── search supported profiles
+      ├── draft marketplace search
+      ├── draft RFP
+      ├── summarize provider evidence
+      └── prepare evaluation matrix
+      ↓
+Human Procurement / Business Owner
 ```
 
-Example agent responsibilities:
+The agent recommends; it does not autonomously hire.
 
-**Strategy Agent** - summarize scorecard performance; - identify
-objectives requiring review; - connect indicators to initiatives.
+---
 
-**Finance Agent** - analyze financial metrics; - explain variance; -
-generate forecast commentary.
+# 12. Proposed Agent Roles
 
-**Process Agent** - analyze cycle time and process KPIs; - connect
-process performance to strategy.
-
-**Data Agent** - inspect lineage and metric definitions; - explain
-data-quality issues.
-
-**Risk Agent** - identify emerging risk signals; - correlate risks with
-strategic objectives.
-
-Agents should operate under explicit authorization, tool boundaries,
-audit logging, and human review.
-
-------------------------------------------------------------------------
-
-## RAG and Enterprise Knowledge
-
-Retrieval-Augmented Generation can connect structured analytics with
-enterprise documentation.
-
-``` text
-Policies / Reports / Manuals / Plans / Lessons Learned
-                         |
-                   Ingestion
-                         |
-            Chunking / Metadata
-                         |
-                 Vector Index
-                         |
-                      RAG
-                         |
-                  AI Assistant
-                         |
-                 Cited Response
+```text
+                     BSC AI ORCHESTRATOR
+                             │
+       ┌─────────────┬───────┼──────────┬─────────────┐
+       ▼             ▼       ▼          ▼             ▼
+   Strategy       Services Provider   Finance       Risk
+    Agent          Agent    Agent      Agent        Agent
+       │             │       │          │             │
+       └─────────────┴───────┼──────────┴─────────────┘
+                             ▼
+                       Governed Tools
+                             │
+       ┌──────────────┬──────┼───────────────┐
+       ▼              ▼      ▼               ▼
+    Metrics         RAG   LinkedIn App    Vendor DB
 ```
 
-Potential knowledge sources:
+### Strategy Agent
+Identifies strategic objectives requiring external capability.
 
--   strategic plans;
--   annual reports;
--   policies;
--   KPI dictionaries;
--   process documentation;
--   project documentation;
--   quality manuals;
--   lessons learned;
--   approved research.
+### Services Agent
+Transforms gaps into service requirements and sourcing plans.
 
-Access control should be preserved during retrieval.
+### Provider Agent
+Compares candidate providers using professional evidence.
 
-------------------------------------------------------------------------
+### Finance Agent
+Evaluates cost, budget, ROI, and financial impact.
 
-## Forecasting and Predictive Analytics
+### Risk Agent
+Evaluates delivery, dependency, data, legal, and supplier risks.
 
-Candidate use cases:
+---
 
--   revenue forecasting;
--   demand forecasting;
--   capacity forecasting;
--   churn risk;
--   process-duration prediction;
--   quality trends;
--   financial variance;
--   workforce indicators;
--   initiative outcome probability;
--   KPI threshold breach prediction.
+# 13. Provider Candidate Model
 
-Forecasts should expose:
+```yaml
+provider_candidate:
+  id: provider_001
+  source: linkedin
+  source_type: professional_profile
+  service_category: software_development
+  professional_profile:
+    name: "..."
+    title: "..."
+    company: "..."
+    location: "..."
+  evidence:
+    skills: []
+    relevant_projects: []
+    recommendations: []
+    service_page: null
+  evaluation:
+    strategic_fit: null
+    technical_fit: null
+    delivery_fit: null
+    commercial_fit: null
+    risk_score: null
+  provenance:
+    retrieved_at: "..."
+    source_reference: "..."
+```
 
--   model version;
--   training period;
--   forecast horizon;
--   confidence interval where applicable;
--   validation metrics;
--   last refresh time.
+Only professional and service-relevant information should be used.
 
-------------------------------------------------------------------------
+---
 
-## Multi-Criteria Decision Support
+# 14. Proposal Object
 
-Decision-support models can rank alternatives against explicit criteria.
+```yaml
+proposal:
+  id: proposal_001
+  requirement_id: sr_2026_001
+  provider_id: provider_001
+  source: linkedin_services_marketplace
+  amount: 8500
+  currency: USD
+  delivery_days: 45
+  scope:
+    - architecture
+    - prototype
+    - documentation
+  assumptions: []
+  exclusions: []
+  received_at: "..."
+  status: under_review
+```
 
-``` text
-Alternatives
-     |
-Criteria
-     |
-Weights
-     |
-Normalization
-     |
-Scoring
-     |
+---
+
+# 15. Multi-Criteria Provider Evaluation
+
+OpenBSC already supports multi-criteria decision support.
+
+Recommended provider model:
+
+```text
+Provider Score =
+    Strategic Alignment
+  + Technical Fit
+  + Demonstrated Experience
+  + Delivery Capability
+  + Cost / Value
+  + Availability
+  + Communication
+  + Risk
+```
+
+Example weighting:
+
+| Criterion | Weight |
+|---|---:|
+| Strategic alignment | 20% |
+| Technical/professional fit | 20% |
+| Demonstrated experience | 15% |
+| Delivery capability | 15% |
+| Cost/value | 10% |
+| Availability | 10% |
+| Communication / responsiveness | 5% |
+| Risk | 5% |
+
+Weights must be configurable.
+
+---
+
+# 16. Explainable Provider Ranking
+
+```text
+Candidate Profiles
+       ↓
+Professional Evidence
+       ↓
+Normalized Criteria
+       ↓
+Weighted Score
+       ↓
 Sensitivity Analysis
-     |
-Human Decision
+       ↓
+AI Explanation
+       ↓
+Human Selection
 ```
 
-Candidate methods include weighted scoring and research implementations
-of established multi-criteria decision-analysis approaches.
+The AI explanation should show:
 
-The system should preserve the distinction between quantitative ranking
-and executive accountability.
+- why a provider scored highly;
+- missing evidence;
+- uncertainty;
+- trade-offs;
+- source provenance.
 
-------------------------------------------------------------------------
+---
 
-## Process and Value Stream Analytics
+# 17. Prohibited Ranking Inputs
 
-The original repository's interest in Value Stream Mapping can be
-integrated directly with strategic performance.
+Do not use professional sourcing to rank candidates based on:
 
-``` text
-Customer Need
-     |
-Process / Value Stream
-     |
-Activities
-     |
-Cycle Time / Wait / Quality / Cost
-     |
-Process KPIs
-     |
+- physical attractiveness;
+- inferred age;
+- race or ethnicity;
+- religion;
+- disability;
+- sexual orientation;
+- marital status;
+- family plans;
+- other protected or intimate characteristics.
+
+The provider ranking should remain tied to legitimate professional requirements.
+
+---
+
+# 18. Marketplace Discovery Flow
+
+```mermaid
+flowchart TD
+    A[Strategic Objective] --> B[KPI / OKR Gap]
+    B --> C[Capability Gap]
+    C --> D[Service Requirement]
+    D --> E[ChatGPT Sourcing Agent]
+
+    E --> F[LinkedIn Professional Search]
+    E --> G[LinkedIn Services Marketplace Search]
+
+    F --> H[Candidate Profiles]
+    G --> I[Service Pages / Providers]
+
+    H --> J[Candidate Registry]
+    I --> J
+
+    J --> K[Multi-Criteria Evaluation]
+    K --> L[Shortlist]
+    L --> M[Request Proposal]
+    M --> N[Proposal]
+    N --> O[Human Review]
+    O --> P[Selected Provider]
+    P --> Q[Strategic Initiative]
+    Q --> R[KPI / Outcome Measurement]
+```
+
+---
+
+# 19. ChatGPT Conversation Workflow
+
+Example:
+
+```text
+Executive:
+"We are missing our customer onboarding target."
+
+ChatGPT / OpenBSC:
+"The KPI is 18% below target.
+The primary constraint is integration capacity.
+Would you like me to prepare an external-service requirement?"
+
+Executive:
+"Yes. Focus on CRM integration specialists in Argentina."
+
+ChatGPT:
+1. Generates sourcing specification.
+2. Uses available LinkedIn professional-search capability where applicable.
+3. Prepares LinkedIn Services Marketplace search terms.
+4. Produces shortlist/evaluation workspace.
+5. Drafts RFP text.
+6. Waits for user approval before external actions.
+```
+
+---
+
+# 20. Request-for-Proposal Drafting
+
+ChatGPT can generate:
+
+```markdown
+## Project
+OpenBSC AI CRM Integration
+
+## Objective
+Integrate customer onboarding metrics with CRM and BSC analytics.
+
+## Required Expertise
+- CRM integration
+- REST APIs
+- PostgreSQL
+- business intelligence
+- KPI architecture
+
+## Deliverables
+- integration architecture
+- API mapping
+- MVP
+- documentation
+- KPI validation
+
+## Expected Duration
+4–6 weeks
+```
+
+The user reviews this before submitting it through LinkedIn.
+
+---
+
+# 21. LinkedIn Service Page as Evidence Source
+
+A provider Service Page may provide professional information useful for sourcing, including:
+
+- services offered;
+- description;
+- reviews/ratings where available;
+- media/portfolio;
+- response indicators where LinkedIn displays them;
+- professional profile context.
+
+OpenBSC should store only what is necessary for the sourcing decision.
+
+---
+
+# 22. Provider Relationship Lifecycle
+
+```text
+Discovered
+    ↓
+Reviewed
+    ↓
+Shortlisted
+    ↓
+Proposal Requested
+    ↓
+Proposal Received
+    ↓
+Negotiation
+    ↓
+Selected
+    ↓
+Contracted
+    ↓
+Active
+    ↓
+Completed
+    ↓
+Evaluated
+    ↓
+Preferred / Archived
+```
+
+---
+
+# 23. Strategic Initiative Mapping
+
+```text
+Provider Engagement
+        ↓
+Strategic Initiative
+        ↓
+Deliverables
+        ↓
+Milestones
+        ↓
+Process Metrics
+        ↓
+KPI Impact
+        ↓
 Strategic Objective
 ```
 
-Possible metrics:
+Example:
 
--   lead time;
--   cycle time;
--   waiting time;
--   throughput;
--   rework;
--   defect rate;
--   work in progress;
--   cost per transaction;
--   service level.
-
-------------------------------------------------------------------------
-
-## Quality Management
-
-Quality management can connect operational improvement with BSC
-objectives.
-
-Potential capabilities:
-
--   nonconformity tracking;
--   corrective/preventive actions;
--   audit findings;
--   process capability;
--   Six Sigma-oriented analysis;
--   quality KPIs;
--   root-cause analysis;
--   continuous-improvement initiatives.
-
-``` text
-Quality Event
-     |
-Analysis
-     |
-Corrective Action
-     |
-Process Improvement
-     |
-KPI Change
-     |
-Strategic Impact
+```yaml
+initiative:
+  id: initiative_117
+  objective: reduce_customer_onboarding_time
+  external_provider: provider_001
+  service_requirement: sr_2026_001
+  target_kpi:
+    name: onboarding_cycle_time
+    baseline: 11.4
+    target: 7.0
+    unit: days
 ```
 
-------------------------------------------------------------------------
+---
 
-## Data Integration Architecture
+# 24. Service Marketplace KPI Set
 
-``` text
-Sources
-  |
-Connectors / CDC / APIs / Files
-  |
-Ingestion
-  |
-Validation & Quality
-  |
-Transformation
-  |
-Canonical Models
-  |
+## Sourcing KPIs
+
+```text
+Number of Qualified Providers
+Time to Shortlist
+Time to First Proposal
+Proposal Response Rate
+Proposal Acceptance Rate
+Sourcing Cycle Time
+```
+
+## Financial KPIs
+
+```text
+Average Proposal Value
+Budget Variance
+Cost Avoidance
+External Service ROI
+Cost per Deliverable
+```
+
+## Delivery KPIs
+
+```text
+On-Time Delivery
+Milestone Compliance
+Rework Rate
+Defect Rate
+SLA Compliance
+```
+
+## Strategic KPIs
+
+```text
+KPI Improvement After Engagement
+Objective Achievement Contribution
+Capability Gap Closure
+Knowledge Transfer Score
+Repeat Provider Success Rate
+```
+
+---
+
+# 25. Semantic Metrics Extension
+
+Example:
+
+```yaml
+metric:
+  name: service_sourcing_cycle_time
+  label: Service Sourcing Cycle Time
+  expression: selected_at - requirement_created_at
+  unit: days
+  grain: service_requirement
+  dimensions:
+    - service_category
+    - business_unit
+    - region
+    - sourcing_channel
+  owner: procurement
+```
+
+---
+
+# 26. Event Model
+
+```text
+CapabilityGapDetected
+ServiceRequirementCreated
+ProviderDiscovered
+ProviderShortlisted
+ProposalRequested
+ProposalReceived
+ProviderSelected
+EngagementStarted
+MilestoneCompleted
+EngagementCompleted
+ProviderEvaluated
+KPIImpactMeasured
+```
+
+These events can feed OpenBSC analytics.
+
+---
+
+# 27. Integration API
+
+Recommended canonical endpoints:
+
+```text
+POST /service-requirements
+GET  /service-requirements/{id}
+
+POST /providers
+GET  /providers/{id}
+POST /providers/{id}/evaluations
+
+POST /proposals
+GET  /proposals/{id}
+
+POST /engagements
+GET  /engagements/{id}
+
+POST /initiatives/{id}/providers
+GET  /objectives/{id}/capability-gaps
+```
+
+---
+
+# 28. Plugin Gateway
+
+```text
+ChatGPT
+   ↓
+Plugin / App
+   ↓
+OpenBSC Plugin Gateway
+   ↓
+OAuth / OIDC
+   ↓
+Policy Engine
+   ↓
+Tool Registry
+   ├── KPI Query
+   ├── Strategy Query
+   ├── Provider Registry
+   ├── Proposal Registry
+   └── LinkedIn Connector
+```
+
+Each tool should have:
+
+- scope;
+- permissions;
+- audit log;
+- rate limits;
+- input validation;
+- explicit write authorization.
+
+---
+
+# 29. Read vs Write Permissions
+
+Recommended default:
+
+```text
+ChatGPT Read
+✓ objectives
+✓ KPIs
+✓ service requirements
+✓ provider candidates
+✓ approved internal documents
+
+ChatGPT Write with Confirmation
+✓ create draft service requirement
+✓ register candidate
+✓ store proposal summary
+✓ create draft initiative
+
+External Action with Explicit Approval
+✓ open provider profile
+✓ request proposal
+✓ send message
+✓ accept / reject engagement
+```
+
+---
+
+# 30. Human-in-the-Loop Procurement
+
+```text
+AI Recommendation
+       ↓
+Evidence
+       ↓
+Score
+       ↓
+Risk Assessment
+       ↓
+Budget Validation
+       ↓
+Human Approval
+       ↓
+External Action
+```
+
+Never allow the LLM to autonomously commit spending or contractual obligations.
+
+---
+
+# 31. Financial Control
+
+```text
+Service Requirement
+      ↓
+Budget Check
+      ↓
+Proposal
+      ↓
+Cost Comparison
+      ↓
+Approval Threshold
+      ↓
+Authorized Signatory
+      ↓
+Contract / Purchase Process
+```
+
+ChatGPT may support analysis but should not become a financial authorization mechanism.
+
+---
+
+# 32. RAG for Provider Selection
+
+Potential internal knowledge:
+
+```text
+Procurement Policies
+Past Contracts
+Vendor Evaluations
+Project Lessons Learned
+Architecture Standards
+Security Requirements
+Budget Rules
+Legal Templates
+```
+
+Flow:
+
+```text
+Service Requirement
+      +
+Provider Evidence
+      +
+Internal RAG
+      ↓
+ChatGPT / OpenBSC Agent
+      ↓
+Evidence-Based Recommendation
+```
+
+---
+
+# 33. Risk Evaluation
+
+Provider risks may include:
+
+- delivery capacity;
+- schedule;
+- dependency;
+- data handling;
+- security;
+- subcontracting;
+- IP ownership;
+- geographic/legal constraints;
+- continuity;
+- vendor lock-in.
+
+Example:
+
+```yaml
+provider_risk:
+  delivery: medium
+  security: low
+  ip: medium
+  continuity: low
+  lock_in: low
+  overall: medium
+```
+
+---
+
+# 34. Open-Core Principle
+
+```text
+OPENBSC CORE
+────────────────────────────
+Strategy
+BSC
+KPI / OKR
 Semantic Metrics
-  |
-BI / BSC / AI
+Provider Registry
+Proposal Registry
+MCDA
+RAG
+AI Agents
+BI
+
+         ↕ adapter
+
+EXTERNAL SERVICES
+────────────────────────────
+ChatGPT Plugin / App
+LinkedIn
+LinkedIn Services Marketplace
+Commercial ERP
+Commercial procurement tools
 ```
 
-Supported integration patterns may include:
+OpenBSC should remain operational if any external service is removed.
 
--   REST APIs;
--   event streams;
--   CDC;
--   JDBC/ODBC;
--   files;
--   object storage;
--   message brokers;
--   federated SQL;
--   scheduled ELT/ETL.
+---
 
-------------------------------------------------------------------------
+# 35. Alternative Provider Channels
 
-## Warehouse and Lakehouse
+LinkedIn Services Marketplace should be one channel among several.
 
-OpenBSC AI does not require a single storage architecture.
-
-``` text
-Operational Systems
-       |
-   Ingestion
-       |
-+------+-------------------+
-|                          |
-Warehouse                Lakehouse
-|                          |
-+------------+-------------+
-             |
-        Semantic Layer
+```text
+Service Requirement
+      ↓
+Provider Channel Adapter
+      ├── LinkedIn Services
+      ├── Existing Vendor Database
+      ├── Professional Network
+      ├── University / Research Network
+      ├── Open-Source Community
+      └── Other Approved Marketplace
 ```
 
-The implementation can choose a warehouse, lakehouse, federated-query
-model, or hybrid architecture according to scale and governance
-requirements.
+This reduces platform lock-in.
 
-------------------------------------------------------------------------
+---
 
-## Real-Time Analytics
+# 36. Provider Provenance
 
-Real-time processing is optional and should be used when business value
-justifies operational complexity.
+Every provider record should identify origin:
 
-Potential scenarios:
-
--   operational KPI monitoring;
--   service-level alerts;
--   transaction anomalies;
--   supply-chain events;
--   quality events;
--   capacity utilization.
-
-``` text
-Events -> Stream -> Transform -> Metric -> Alert/Dashboard
+```yaml
+provenance:
+  source: linkedin
+  source_type: service_page
+  retrieved_by: user_or_authorized_connector
+  retrieved_at: "..."
+  evidence_version: "..."
+  permitted_use: strategic_service_sourcing
 ```
 
-Historical and streaming definitions should resolve to compatible
-semantic metrics whenever possible.
+---
 
-------------------------------------------------------------------------
+# 37. Data Minimization
 
-## Dashboards and Visualization
+Store only information required to evaluate professional services.
 
-Recommended dashboard hierarchy:
+Recommended:
 
-``` text
-Executive Scorecard
-       |
-Perspective Dashboard
-       |
-Objective Dashboard
-       |
-KPI Detail
-       |
-Diagnostic Analytics
-       |
-Source Evidence
+```text
+Name
+Professional title
+Company
+Location
+Service category
+Relevant experience
+Portfolio evidence
+Proposal
+Commercial terms
+Evaluation
+Engagement history
 ```
 
-Visualization should prioritize:
+Avoid creating unnecessary replicas of LinkedIn data.
 
--   decision relevance;
--   clear targets;
--   trends;
--   variance;
--   context;
--   accessible design;
--   drill-through;
--   traceable data.
+---
 
-------------------------------------------------------------------------
+# 38. Security Architecture
 
-## Enterprise System Integration
-
-Typical integration domains:
-
-  Domain     Examples of information
-  ---------- ------------------------------------------------
-  ERP        finance, procurement, inventory, manufacturing
-  CRM        customers, pipeline, service
-  SCM        suppliers, logistics, inventory
-  HR/HCM     workforce, skills, learning
-  QMS        quality, audits, corrective actions
-  PPM        programs, projects, initiatives
-  Finance    planning, budget, actuals
-  ITSM       service and operational metrics
-  External   market, economic, benchmark, public data
-
-Adapters should isolate source-specific schemas from the canonical
-strategy and metric models.
-
-------------------------------------------------------------------------
-
-## MBSE and Enterprise Architecture
-
-The original repository organizes engineering work through MBSE, CAD,
-CAM, and CAS concepts. OpenBSC AI retains this structure as an
-enterprise transformation and traceability framework.
-
-``` text
-Business Strategy
-       |
-Enterprise Requirements
-       |
-MBSE / Architecture
-       |
-Business + Information + Application + Technology
-       |
-Implementation
-       |
-Operational Systems
-       |
-Analytics / Simulation
-       |
-Measured Outcomes
-       |
-Strategy Feedback
+```text
+ChatGPT
+   ↓
+OAuth / App Authorization
+   ↓
+OpenBSC API Gateway
+   ↓
+RBAC / ABAC
+   ↓
+Policy Engine
+   ↓
+Provider / KPI / Proposal APIs
+   ↓
+Audit Log
 ```
 
-For software-centric BSC work, MBSE and enterprise architecture are the
-primary architectural layers; CAD/CAM/CAS directories may remain useful
-where the repository also models industrial or engineered systems.
+Controls:
 
-------------------------------------------------------------------------
+- least privilege;
+- encryption;
+- auditability;
+- tenant isolation;
+- data retention;
+- explicit action approval;
+- secrets management.
 
-## Open-Source Technology Compendium
+---
 
-The following table reorganizes technologies associated with the
-original compendium into candidate roles. Inclusion does **not** mean
-that every component is a required dependency.
+# 39. Recommended OpenBSC Agents
 
-  -----------------------------------------------------------------------
-  Domain                  Candidate               Potential role
-  ----------------------- ----------------------- -----------------------
-  BI                      Apache Superset         Data exploration and
-                                                  dashboards
+| Agent | Purpose |
+|---|---|
+| Strategy Agent | Detect strategic gaps |
+| Services Sourcing Agent | Convert gaps into service requirements |
+| Provider Research Agent | Organize professional candidate evidence |
+| Proposal Analysis Agent | Compare proposals |
+| Procurement Risk Agent | Identify sourcing risks |
+| Finance Agent | Budget/ROI analysis |
+| Initiative Agent | Link provider work to strategic execution |
+| KPI Agent | Measure post-engagement impact |
 
-  BI                      Metabase                Self-service analytics
+---
 
-  BI                      Knowage                 Business analytics
+# 40. Services Marketplace Dashboard
 
-  Reporting               Eclipse BIRT            Reporting
-
-  BI                      Frappe Insights         Business intelligence
-
-  BSC                     bambooBSC               BSC reference
-
-  Visualization           Data Formulator         AI-assisted
-                                                  visualization research
-
-  Semantic modeling       LookML concepts / open  Semantic modeling
-                          alternatives            reference
-
-  OLAP                    Apache Pinot            Real-time distributed
-                                                  analytics
-
-  Query federation        Trino                   Distributed SQL
-
-  Transformation          dbt / dbt-trino         Analytics engineering
-
-  Workflow                Apache Airflow          Data workflow
-                                                  orchestration
-
-  ERP                     iDempiere               ERP/CRM/SCM reference
-                                                  integration
-
-  ERP ecosystem           Frappe                  Enterprise application
-                                                  integration
-
-  Graph analytics         Python graph ecosystem  Relationship analysis
-
-  Data mining             ELKI                    Data mining research
-
-  ML platform             Apache Submarine        ML platform reference
-
-  Transactions            Apache Seata            Distributed transaction
-                                                  reference
-
-  Quality                 OpenQMS.net             QMS reference
-
-  Process improvement     VSM / Six Sigma tools   Process analytics
-
-  Database                PostgreSQL              Relational analytics
-
-  Vector database         Qdrant or equivalent    Optional RAG retrieval
-
-  AI                      PyTorch                 ML research
-
-  AI orchestration        LangChain / LangGraph   Optional agent/RAG
-                          or equivalent           workflows
-
-  Containers              Docker                  Reproducible deployment
-
-  Orchestration           Kubernetes              Scalable deployment
-
-  Architecture            Capella / Arcadia       MBSE
-
-  APIs                    OpenAPI / AsyncAPI      Interface contracts
-  -----------------------------------------------------------------------
-
-Each third-party technology must be independently evaluated for current
-license, maintenance status, security posture, interoperability, and
-deployment suitability.
-
-------------------------------------------------------------------------
-
-## User Guide
-
-A typical strategy-management cycle:
-
-1.  Define vision and strategic themes.
-2.  Configure BSC perspectives.
-3.  Define strategic objectives.
-4.  Build the strategy map.
-5.  Define KPIs and/or OKRs.
-6.  Assign owners and targets.
-7.  Connect canonical metrics to enterprise data.
-8.  Validate metric definitions.
-9.  Configure dashboards.
-10. Monitor performance.
-11. Run diagnostic and predictive analytics.
-12. Use optional AI assistance to investigate results.
-13. Review recommendations and evidence.
-14. Define or adjust initiatives.
-15. Track outcomes.
-16. Reassess strategic assumptions.
-
-------------------------------------------------------------------------
-
-## Installation Guide
-
-OpenBSC AI is currently best understood as a reference architecture and
-technology compendium. Do not assume every catalogued project is
-installed.
-
-Clone:
-
-``` bash
-git clone https://github.com/robotics-intelligent-systems/jfxbsc.git
-cd jfxbsc
+```text
+┌──────────────────────────────────────────────────┐
+│ STRATEGIC SERVICES DASHBOARD                     │
+├──────────────────────────────────────────────────┤
+│ Open Requirements:                         8     │
+│ Qualified Providers:                      34     │
+│ Proposals Under Review:                   11     │
+│ Active External Initiatives:               6     │
+│ Average Sourcing Cycle:                 9.2 d    │
+│ On-Time External Delivery:                88%    │
+│ Strategic KPI Impact:                  +12.4%    │
+└──────────────────────────────────────────────────┘
 ```
 
-A minimal implementation can begin with:
+---
 
-``` text
-Database          PostgreSQL
-Transformation    dbt-compatible workflow
-BI                Superset or Metabase
-API               REST/OpenAPI service
-Strategy Core     Application service
-AI                Optional Python service
-Containers        Docker
+# 41. Example Use Case — AI Consulting
+
+```text
+Objective:
+Increase AI-assisted engineering productivity
+
+KPI:
+Deployment lead time
+
+Gap:
+Lack of AI-agent architecture expertise
+
+Service Requirement:
+AI agent / MCP / software architecture consultant
+
+Channel:
+LinkedIn Services Marketplace
+
+ChatGPT Role:
+Draft requirement
+Find professional profiles
+Prepare evaluation
+Summarize proposals
+
+OpenBSC Role:
+Score strategic fit
+Approve initiative
+Track delivery
+Measure KPI impact
 ```
 
-A larger deployment can add:
+---
 
-``` text
-Federated SQL     Trino
-Real-Time OLAP    Pinot
-Orchestration     Airflow
-Vector Search     Qdrant-compatible service
-AI Agents         Optional agent framework
-Orchestration     Kubernetes
-MBSE              Capella / Arcadia
+# 42. Example Use Case — Financial Analysis
+
+```text
+Objective:
+Improve investment decision quality
+
+Gap:
+Specialized financial modeling capacity
+
+LinkedIn Service Category:
+Financial Analysis
+
+Provider Evaluation:
+Experience
+Sector fit
+Methodology
+Price
+Availability
+Risk
+
+Outcome KPI:
+Forecast accuracy
+Decision cycle time
+Portfolio return attribution
 ```
 
-Executable modules should specify exact tested versions, operating
-systems, SDKs, compilers, package managers, environment variables, build
-instructions, tests, migrations, and security configuration.
+---
 
-------------------------------------------------------------------------
+# 43. Example Use Case — Software Development
 
-## Dependencies
-
-### Required Dependencies
-
-Only dependencies required by an actual executable module should be
-classified as required.
-
-### Optional Integrations
-
-Examples:
-
--   Apache Superset;
--   Metabase;
--   Trino;
--   Apache Pinot;
--   Airflow;
--   PostgreSQL;
--   Qdrant;
--   enterprise ERP/CRM/QMS adapters;
--   AI/ML frameworks;
--   Capella.
-
-### Research References
-
-Technologies, standards, papers, commercial products, historical
-systems, and alternative open-source projects evaluated for comparison
-should be clearly classified as references rather than runtime
-dependencies.
-
-Recommended dependency record:
-
-``` yaml
-dependency:
-  name:
-  version:
-  purpose:
-  status: required | optional | reference
-  license:
-  source:
-  tested_platforms:
-  security_notes:
+```text
+Strategic Initiative
+       ↓
+Need: OpenBSC Mobile Dashboard
+       ↓
+LinkedIn Service Category
+iOS / Software Development
+       ↓
+Provider Candidates
+       ↓
+Proposal Comparison
+       ↓
+Selected Provider
+       ↓
+Delivery Milestones
+       ↓
+Quality + Schedule KPIs
 ```
 
-------------------------------------------------------------------------
+---
 
-## Recommended Repository Structure
+# 44. Build / Buy / Partner Decision
 
-``` text
+Before external sourcing:
+
+```text
+Capability Gap
+      ↓
+Can internal team solve it?
+      │
+  ┌───┴────┐
+ Yes       No
+  │         │
+Internal    ↓
+Initiative  Buy / Partner Evaluation
+            │
+            ├── External Provider
+            ├── Open-Source Community
+            ├── University Partnership
+            └── Strategic Partner
+```
+
+This prevents unnecessary outsourcing.
+
+---
+
+# 45. Provider Collaboration Feedback Loop
+
+```text
+Engagement
+    ↓
+Delivery
+    ↓
+Evaluation
+    ↓
+Lessons Learned
+    ↓
+Provider Reputation
+    ↓
+Future Sourcing
+```
+
+OpenBSC should build its own governed engagement history rather than relying only on external marketplace reputation.
+
+---
+
+# 46. MBSE → CAD → CAM → CAS Mapping
+
+```text
+MBSE
+Strategic sourcing capability model
+        ↓
+CAD
+Service requirement schemas
+Provider data model
+Workflow design
+        ↓
+CAM
+Plugin gateway
+LinkedIn adapter
+OpenBSC APIs
+Dashboards
+        ↓
+CAS
+Provider-selection scenarios
+Sourcing cycle simulations
+Cost/benefit analysis
+Risk simulation
+AI evaluation
+        ↓
+Production
+```
+
+---
+
+# 47. Recommended Repository Extension
+
+```text
 jfxbsc/
-├── README.md
-├── LICENSE
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
 ├── docs/
 │   ├── architecture/
 │   ├── strategy/
+│   ├── ai/
+│   ├── sourcing/
+│   │   ├── services-marketplace.md
+│   │   ├── provider-evaluation.md
+│   │   └── procurement-governance.md
+│   └── integrations/
+│       ├── chatgpt/
+│       └── linkedin/
+│
+├── src/
+│   ├── strategy/
 │   ├── metrics/
-│   ├── integrations/
-│   └── use-cases/
-├── mbse/
-│   ├── requirements/
-│   ├── business/
-│   ├── information/
-│   ├── application/
-│   └── technology/
-├── strategy/
-│   ├── perspectives/
-│   ├── objectives/
-│   ├── maps/
-│   ├── kpi/
-│   ├── okr/
-│   └── initiatives/
-├── semantic/
-│   ├── entities/
-│   ├── metrics/
-│   ├── dimensions/
-│   └── lineage/
-├── integration/
-│   ├── erp/
-│   ├── crm/
-│   ├── scm/
-│   ├── hr/
-│   ├── qms/
-│   └── external/
-├── data/
-│   ├── ingestion/
-│   ├── transformation/
-│   ├── quality/
-│   └── schemas/
-├── analytics/
-│   ├── descriptive/
-│   ├── diagnostic/
-│   ├── predictive/
-│   └── prescriptive/
-├── ai/
+│   ├── sourcing/
+│   │   ├── requirements/
+│   │   ├── providers/
+│   │   ├── proposals/
+│   │   └── engagements/
 │   ├── agents/
-│   ├── rag/
-│   ├── forecasting/
-│   └── experiments/
-├── dashboards/
-├── api/
-├── deployment/
-├── tests/
-└── examples/
+│   │   ├── sourcing_agent/
+│   │   ├── provider_agent/
+│   │   └── proposal_agent/
+│   └── integrations/
+│       ├── chatgpt/
+│       └── linkedin/
+│
+├── schemas/
+│   ├── service_requirement.yaml
+│   ├── provider_candidate.yaml
+│   ├── proposal.yaml
+│   └── engagement.yaml
+│
+└── tests/
+    ├── sourcing/
+    ├── integrations/
+    ├── ai/
+    └── security/
 ```
 
-------------------------------------------------------------------------
+---
 
-## Business Use Cases
+# 48. MVP
 
-### Executive Strategy Review
+## Phase 1 — Internal Strategic Sourcing
 
-Provide a unified scorecard of strategic objectives, targets, trends,
-initiatives, and risks.
+Implement:
 
-### Financial Performance
+- capability gap;
+- service requirement;
+- provider registry;
+- proposal registry;
+- MCDA evaluation;
+- initiative linkage.
 
-Connect financial KPIs to governed accounting and planning data.
+No LinkedIn automation required.
 
-### Customer Performance
+---
 
-Analyze satisfaction, retention, service quality, sales, and customer
-value.
+## Phase 2 — ChatGPT Plugin Integration
 
-### Operational Excellence
+Expose governed tools:
 
-Connect process metrics and value-stream analysis to strategic
-objectives.
-
-### Workforce and Learning
-
-Track skills, learning, capacity, innovation, and organizational
-development.
-
-### Quality Management
-
-Connect quality events and improvement programs to BSC performance.
-
-### Portfolio Management
-
-Evaluate whether projects and initiatives contribute to strategic
-objectives.
-
-### Data-Driven Public/Nonprofit Management
-
-Adapt perspectives and measures for public value, beneficiaries, service
-outcomes, and institutional capacity.
-
-### AI-Assisted Performance Analysis
-
-Generate evidence-linked summaries and diagnostic hypotheses for human
-review.
-
-------------------------------------------------------------------------
-
-## MVP
-
-The recommended MVP intentionally avoids implementing the entire
-technology catalog.
-
-``` text
-                    Web UI
-                      |
-               Strategy Service
-                      |
-       +--------------+--------------+
-       |              |              |
- Objectives         KPIs        Initiatives
-       |              |              |
-       +--------------+--------------+
-                      |
-               Semantic Metrics
-                      |
-                 PostgreSQL
-                      |
-               Data Connectors
-                      |
-                 BI Dashboard
-                      |
-               Optional AI API
+```text
+get_objective
+get_kpi
+get_capability_gap
+create_service_requirement_draft
+list_provider_candidates
+evaluate_providers
+create_initiative_draft
 ```
 
-### MVP capabilities
+Writes require user confirmation.
 
--   BSC perspectives;
--   strategic objectives;
--   strategy-map relationships;
--   KPI definitions;
--   targets and thresholds;
--   metric values;
--   initiatives;
--   ownership;
--   basic dashboard;
--   PostgreSQL persistence;
--   REST API;
--   CSV/API data ingestion;
--   audit metadata;
--   optional AI-generated performance summary.
+---
 
-### MVP success criteria
+## Phase 3 — LinkedIn Professional Discovery
 
--   one complete scorecard can be configured;
--   KPIs can be connected to governed data;
--   targets and actuals are visible;
--   objective status is calculated consistently;
--   initiatives can be linked to objectives;
--   users can trace KPI values to metric definitions;
--   the stack can run locally using containers.
+Integrate the supported LinkedIn connector for professional-profile discovery where applicable.
 
-------------------------------------------------------------------------
+Store:
 
-## Development Roadmap
+- minimal professional metadata;
+- provenance;
+- evaluation evidence.
 
-### Phase 1 --- Documentation and Domain Model
+---
 
--   [x] BID-inspired README structure.
--   [x] OpenBSC AI reference architecture.
--   [x] BSC/KPI/OKR domain model.
--   [x] Technology catalog classification.
--   [ ] Formal JSON/YAML schemas.
--   [ ] Architecture decision records.
+## Phase 4 — Services Marketplace Workflow
 
-### Phase 2 --- Strategy Core
+Add:
 
--   [ ] Perspectives.
--   [ ] Objectives.
--   [ ] Strategy-map relationships.
--   [ ] KPIs.
--   [ ] OKRs.
--   [ ] Initiatives.
--   [ ] Ownership and permissions.
+- marketplace search instructions;
+- Service Page references;
+- RFP drafting;
+- proposal registration;
+- provider comparison.
 
-### Phase 3 --- Semantic Metrics
+Marketplace actions remain user-approved.
 
--   [ ] Metric contracts.
--   [ ] Dimensions.
--   [ ] Data lineage.
--   [ ] Quality rules.
--   [ ] Versioning.
--   [ ] Metric tests.
+---
 
-### Phase 4 --- BI and Integration
+## Phase 5 — Closed-Loop BSC Measurement
 
--   [ ] PostgreSQL reference implementation.
--   [ ] BI reference dashboard.
--   [ ] CSV connector.
--   [ ] REST connector.
--   [ ] ERP adapter example.
--   [ ] Federated-query experiment.
+Measure:
 
-### Phase 5 --- AI
-
--   [ ] KPI forecasting.
--   [ ] Anomaly detection.
--   [ ] RAG knowledge assistant.
--   [ ] Strategy analysis agent.
--   [ ] Explainability metadata.
--   [ ] Human-review workflow.
-
-### Phase 6 --- Process and Quality
-
--   [ ] Value-stream analytics.
--   [ ] Quality metrics.
--   [ ] Corrective-action integration.
--   [ ] Multi-criteria decision-support module.
-
-### Phase 7 --- Enterprise Scale
-
--   [ ] Real-time metrics.
--   [ ] Multi-tenant architecture.
--   [ ] Kubernetes deployment.
--   [ ] Enterprise SSO.
--   [ ] Advanced audit.
--   [ ] Observability.
--   [ ] High availability.
-
-------------------------------------------------------------------------
-
-## How to Contribute
-
-Contributions are welcome in:
-
--   Balanced Scorecard;
--   KPI/OKR management;
--   business intelligence;
--   data engineering;
--   semantic metrics;
--   enterprise integration;
--   AI/ML;
--   RAG and agents;
--   forecasting;
--   process analytics;
--   quality management;
--   MBSE;
--   UX;
--   security;
--   testing;
--   documentation.
-
-Typical workflow:
-
-``` bash
-git checkout -b feature/my-contribution
-git add .
-git commit -m "Add: description of contribution"
-git push origin feature/my-contribution
+```text
+Sourcing
+   ↓
+Engagement
+   ↓
+Initiative Delivery
+   ↓
+KPI Change
+   ↓
+Strategic Outcome
 ```
 
-Pull requests should describe:
+---
 
-1.  problem or use case;
-2.  proposed solution;
-3.  architecture impact;
-4.  schema/interface changes;
-5.  dependencies introduced;
-6.  license implications;
-7.  tests;
-8.  security implications;
-9.  documentation changes.
+# 49. Development Roadmap
 
-Do not commit credentials, confidential corporate data, personal data
-without authorization, or proprietary datasets/code without permission.
+```text
+Q1
+Provider/Requirement domain model
+MCDA scoring
+BSC linkage
 
-------------------------------------------------------------------------
+Q2
+ChatGPT plugin gateway
+RAG over sourcing policies
+Proposal analysis
 
-## Code of Conduct
+Q3
+LinkedIn connector integration
+Provider candidate provenance
+Services Marketplace workflow
 
-Contributors are expected to maintain a professional, respectful,
-inclusive, and collaborative environment.
+Q4
+Strategic sourcing dashboard
+ROI analytics
+Provider performance feedback
+```
 
-A dedicated `CODE_OF_CONDUCT.md` should be maintained at repository
-root.
+---
 
-------------------------------------------------------------------------
+# 50. Governance
 
-## Authors and Maintainers
+OpenBSC should enforce:
 
-Maintained by the **Robotics Intelligent Systems** open-source
-initiative.
+- professional-purpose limitation;
+- user approval for external actions;
+- no automated contracting;
+- no autonomous spending;
+- no scraping;
+- no ranking on sensitive personal characteristics;
+- evidence-backed recommendations;
+- provider appeal/correction where appropriate;
+- audit logging;
+- configurable retention;
+- legal/procurement review for contracts.
 
-Repository: `robotics-intelligent-systems/jfxbsc`
+---
 
-Third-party projects, trademarks, standards, datasets, and technologies
-remain the property of their respective owners.
+# 51. Final Integrated Architecture
 
-------------------------------------------------------------------------
+```text
+                         OPENBSC AI
+                             │
+                  STRATEGY / KPI / OKR
+                             │
+                             ▼
+                       CAPABILITY GAP
+                             │
+                             ▼
+                   SERVICE REQUIREMENT
+                             │
+                             ▼
+                  CHATGPT SOURCING AGENT
+                             │
+             ┌───────────────┼────────────────┐
+             ▼               ▼                ▼
+        INTERNAL RAG     LINKEDIN APP     VENDOR DB
+                             │
+                             ▼
+                 LINKEDIN SERVICES MARKETPLACE
+                             │
+                       USER APPROVAL
+                             │
+                             ▼
+                          PROPOSAL
+                             │
+                             ▼
+                    PROVIDER EVALUATION
+                  MCDA + AI + HUMAN REVIEW
+                             │
+                             ▼
+                      PROVIDER SELECTED
+                             │
+                             ▼
+                    STRATEGIC INITIATIVE
+                             │
+                             ▼
+                       KPI / OUTCOME
+                             │
+                             ▼
+                     BSC FEEDBACK LOOP
+```
 
-## Intellectual Property and Open Design
+---
 
-OpenBSC AI favors open interfaces and replaceable implementations.
+# 52. Strategic Recommendation
 
-Principles:
+The recommended architecture is:
 
--   keep strategy and metric schemas technology-neutral;
--   prefer open standards and openly licensed components where
-    practical;
--   isolate vendor-specific integrations behind adapters;
--   document provenance and licenses;
--   avoid copying proprietary BI semantic models;
--   avoid embedding confidential enterprise information in examples;
--   provide synthetic datasets for demonstrations;
--   minimize vendor lock-in.
+```text
+OpenBSC AI
+   +
+ChatGPT Plugin / App Gateway
+   +
+LinkedIn Professional Connector
+   +
+LinkedIn Services Marketplace
+   +
+Multi-Criteria Provider Evaluation
+   +
+Human Procurement Approval
+   +
+Strategic Initiative Tracking
+   +
+KPI Outcome Measurement
+```
 
-Open-source licensing does not guarantee freedom from all third-party
-patent or trademark rights. Deployers remain responsible for appropriate
-intellectual-property review for their intended jurisdiction and use.
+The critical design principle is:
 
-------------------------------------------------------------------------
+> **Use LinkedIn to discover professional capability, ChatGPT to assist analysis and workflow, and OpenBSC to govern strategic decisions, initiatives, metrics, and outcomes.**
 
-## Disclaimer
+---
 
-jfxbsc / OpenBSC AI is a research, educational, engineering, and
-experimental software project.
+# 53. Current Capability Note
 
-Analytical, forecasting, optimization, and AI outputs may contain
-errors, uncertainty, incomplete context, or outdated information. They
-should not be treated as automatically authoritative for financial,
-legal, employment, safety-critical, regulatory, or other consequential
-decisions.
+At the time of this architecture:
 
-Organizations deploying the platform should implement appropriate:
+- ChatGPT plugins can bundle workflows and connected apps.
+- The LinkedIn connector available in the current ChatGPT environment supports professional profile search.
+- LinkedIn Services Marketplace supports provider discovery, Service Pages, requests for proposals, and provider/client messaging.
+- Commercial terms and payment are finalized outside LinkedIn.
+- This document does **not** assume that the current ChatGPT LinkedIn connector exposes direct Services Marketplace proposal actions.
 
--   data governance;
--   privacy controls;
--   role-based access;
--   audit logging;
--   cybersecurity;
--   model validation;
--   human oversight;
--   regulatory compliance.
+If LinkedIn later provides approved marketplace actions through the connected app or an official API, the adapter can be upgraded without changing the OpenBSC domain model.
 
-The BID repository template is used only as a **documentation-structure
-reference**. This project does not claim BID/IDB funding, endorsement,
-catalog membership, sponsorship, or institutional affiliation.
+---
 
-------------------------------------------------------------------------
+# 54. References
 
-## License
+## JFXBSC
+- https://github.com/robotics-intelligent-systems/jfxbsc
 
-The project's actual software license should be declared in the
-repository root (`LICENSE`, `LICENSE.md`, or equivalent).
+## OpenAI
+- ChatGPT apps / plugins:
+  https://help.openai.com/articles/11487775-connectors-in-chatgpt
+- Plugins in ChatGPT and Codex:
+  https://help.openai.com/articles/20001256-plugins-in-chatgpt-and-codex
 
-Third-party libraries, datasets, models, standards, documentation, and
-other assets retain their respective licenses and terms.
+## LinkedIn
+- Services Marketplace:
+  https://www.linkedin.com/services
+- Shopping for services:
+  https://www.linkedin.com/help/linkedin/answer/a569638
+- Service provider workflow:
+  https://www.linkedin.com/help/linkedin/answer/a550345
+- Service Pages:
+  https://www.linkedin.com/help/linkedin/answer/a569535
+- Search for Services:
+  https://www.linkedin.com/help/linkedin/answer/a524479
 
-Do not automatically copy the BID/IDB software license, copyright
-notice, institutional attribution, or BID-only disclaimer solely because
-its README template informed this documentation structure.
+---
 
-------------------------------------------------------------------------
+# 55. Disclaimer
 
-## Open Strategy Principles
+This document is an integration architecture proposal.
 
-**Open Standards · Strategy Traceability · Governed Metrics · Modular BI
-· Explainable Analytics · Human Oversight · Reproducibility**
+It does not claim undocumented LinkedIn API capabilities, nor does it imply that ChatGPT can currently transact directly in LinkedIn Services Marketplace.
 
-> Strategy before dashboards.\
-> Definitions before visualizations.\
-> Govern metrics before automating decisions.\
-> Connect every KPI to evidence.\
-> Use AI to assist analysis, not replace accountability.\
-> Keep every replaceable component replaceable.
+Actual integration capabilities depend on:
+
+- the installed ChatGPT plugin/app;
+- account plan;
+- region;
+- workspace permissions;
+- LinkedIn product/API availability;
+- LinkedIn authorization and usage terms.
+
+All provider selection, contracting, financial commitments, and external communications should remain subject to explicit human authorization and applicable organizational policy.
